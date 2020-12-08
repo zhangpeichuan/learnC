@@ -1,0 +1,20 @@
+baseType.c      基本类型以及范围
+
+define.c        宏的简单实用说明
+
+
+
+
+
+类型    16位编译器  32位编译器  64位编译器 byte
+void        6           0           0
+char        1           1           1
+char*       2           4           8
+short       2           2           2
+int         2           4           4
+float       4           4           4 
+double      8           8           8
+long        4           4           8
+long double 8           12          16
+long long   8           8           8
+
