@@ -2,7 +2,9 @@ baseType.c      基本类型以及范围
 
 define.c        宏的简单实用说明
 
+minproj         static关键字函数调用以及隐藏函数类似访问权限
 
+minproj_extern  extern类型使用
 
 
 
