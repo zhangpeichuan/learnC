@@ -199,3 +199,84 @@ input & output -> I/O(标准IO，文件IO)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+            流程控制
+顺序，选择，循环
+简单结构与复杂流程：自然流程
+NS流程图    工具Dia
+顺序：语句逐句执行
+选择：出现了一种以上的情况
+循环：在某个条件成立的情况下，重复执行某个动作
+
+关键字
+选择：if-else swith-case
+循环：while do-while for if-goto
+辅助控制：continue break 
+
+详解 if-else else只与最近的if匹配
+    if(exp)
+        cmd1;
+    else
+        cmd2
+while(exp)最少执行次数为0
+        loop;
+do-while    最少执行一次
+do
+{
+    loop;
+}while(exp);菜单类的功能
+    do
+    {
+        menu()
+        scanf()
+        if()
+          do sth;
+    }while();
+    
+    menu()
+    scanf()
+    while()
+    {
+         do sth
+            menu();
+            scanf();
+    }
+for:最少循环0次 可以省略exp
+    for(exp1;exp2;exp3)
+                loop;
+if-goto:慎用:goto实现的是无条件的跳转且不能跨函数跳转，破坏结构化编程
+
+死循环:while(1)
+        for(;;);
+        ctrl+c杀掉死循环，实际发送的信号
+辅助控制关键字  break continue
+    while()
+{
+    ........
+    wile()
+    {
+        .....
+        break;
+        .....
+        -----
+        continue;
+        -----
+    }
+    ..........
+}
+
+
+
+
