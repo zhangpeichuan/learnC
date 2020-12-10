@@ -189,8 +189,13 @@ input & output -> I/O(标准IO，文件IO)
     format:"%[修饰符] 格式字符"
     参考图片标准输出修饰符与输入输出格式字符
     
+	int scanf(const char * format,...)
+	format:抑制符*
+	%s的使用时比较危险的，因为不知道存储空间的大小，
+	scanf放在循环结构中，要注意能否接收到正常有效的内容。
 2、字符输入输出函数: getchar,putchar
 3、字符串输入输出函数:gets,puts
+	gets:十分危险的函数，可以用fgets，getline来替换
 
 
 
