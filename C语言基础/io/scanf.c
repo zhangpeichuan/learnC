@@ -29,7 +29,10 @@ int main()
 	//scanf("%*c%c",&ch);
 	scanf("%c",&ch);
 	printf("i = %d ,ch = %c %d \n",i,ch,ch);
-
+    char ch1;
+    printf("Please input char:\n");
+    scanf("%c",&ch1);
+    printf("ch1 = %c\n",ch1);
 
 /*
 	printf("Please enter:\n");
