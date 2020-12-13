@@ -3,6 +3,8 @@
 
 
 // TYPE NAME = VALUE
+//i		*p		**q
+//&i	p		*q
 static void point_usage(){
 	int i = 1;
 	int * p = &i;//int *p; p =&i;
