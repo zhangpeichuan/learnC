@@ -74,9 +74,14 @@ int main (){
     print_int_point_array(m,sizeof(m)/sizeof(*m));
     //打印字符数组
     char ch[] = {'a','b','c','d'};
+    for(int i=0;i<4;i++){
+        printf("%c ",ch[i]);
+    }
+    printf("\n");
+ 
     reverse_array(ch,sizeof(ch)/sizeof(*ch));
     for(int i=0;i<4;i++){
-        printf("%c",ch[i]);
+        printf("%c ",ch[i]);
     }
     printf("\n");
     return 0;
@@ -94,6 +99,7 @@ void print_int_point_array(int *ptr[],int length){
     printf("\n");
 } 
 static void reverse_array(char *p,int length){
+    printf("[%s] %d\n",__FUNCTION__,__LINE__);
     char *q = p+length-1;
     while(p<q){
         char tmp = *p;
