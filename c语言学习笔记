@@ -460,6 +460,16 @@ qsort| pthread_create为给函数传参，叫做回调函数
     本质就是有值得宏，并且不会被预处理替换
     宏的优点是可以传递参数，各有各的作用
 
+    typedef:为已有的数据类型改名
+            typedef 旧名字  新名字;
+
+
+
+                            九、动态内存管理
+malloc、ralloc、realloc、free
+原则:谁申请谁释放
+
+
 
 
 
