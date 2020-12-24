@@ -25,7 +25,11 @@ rewind();
 
 fflush();
 
-
+临时文件:
+1、如何不冲突
+2、及时销毁
+	tmpnam tempnam 
+	tmpfile
 
 
 

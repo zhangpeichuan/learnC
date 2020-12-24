@@ -11,7 +11,48 @@ FILE *fopen(const char * restrict path, const char * restrict mode){
 
     return tmp;
 }
-fgets(*,size,stream);
+#define	SIZE	5
+char buf[SIZE];
+fgets(buf,size,stream);
+
 size-1
 '\n'
+abcd
+1->	a b c d '\0'
+2->	'\n' '\0'
 
+fread(buf,size,mem,stream);
+
+1->数据量足够
+2->只有5个字节
+fread(buf,1,10,fp);
+1->	10 ->10个字节
+2->	5	->5个字节
+fread(buf,10,1,fp);
+1->	1->	10个字节
+2->	0->?????
+
+
+
+
+fp = fopen();
+
+fputc(fp) *10;
+
+fclose();    fseek(fp,0,SEEK_SET)
+
+fopen();
+
+fgetc()*10	fseek(fp,-10,SEEK_CUT)
+rewind();
+
+文件位置指针
+fseek()
+ftell()
+rewind()
+
+
+
+自己封装
+mygetline()
+mygetline_free();
