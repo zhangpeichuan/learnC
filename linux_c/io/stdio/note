@@ -1,0 +1,17 @@
+栈       静态区      堆
+F           F         OK  
+FILE *fopen(const char * restrict path, const char * restrict mode){
+    FILE    *tmp = NULL;
+    tmp = malloc(sizeof(*tmp));
+    
+    tmp-> = ;
+    ......
+
+
+
+    return tmp;
+}
+fgets(*,size,stream);
+size-1
+'\n'
+
