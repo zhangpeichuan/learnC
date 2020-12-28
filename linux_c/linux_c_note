@@ -34,7 +34,30 @@ fflush();
 
 
 
+位图
+r->     O_RDONLY
+r+->    O_RDWR
+w->     O_WRONLY|O_CREAT|O_TRUNC
+W+->    O+RDWR|O_TRUNC|O_CREAT
 
+重载和变参的区分
+
+文件IO/系统调用IO
+fd文件描述符是在文件IO中贯穿始终的类型
+文件描述符的概念
+[整型数 数组下标，文件描述符优先使用当前可用范围数组最小]
+文件IO操作:open、close、read、write、lseek
+    open 变参函数
+    
+将文件IO与标准IO的区别
+IO的效率问题
+文件共享
+原子操作
+程序中的重定向：dup,dup2
+同步：刷新数据sync fsync fdatasync 中间层    系统级别的开发
+fcntl();
+ioctl();
+/dev/fd/
 
 
 
