@@ -17,6 +17,8 @@ typedef struct node_st{
     score   data;
     struct node_st *l,*r;
 }btree;
+static btree *tree = NULL;
+
 
 int insert(btree **root,score *data){
     btree *node;
@@ -59,26 +61,80 @@ score *find(btree *root,int id){
 //          F
 //      B
 //          G
-void draw(btree *root,int level){
+void draw_(btree *root,int level){
     if(root == NULL)
         return;
-    draw(root->r,level+1);
+    draw_(root->r,level+1);
     for(int i=0;i<level;i++){
         printf("    ");
     }
     scoreprint(&root->data);
-    draw(root->l,level+1);
+    draw_(root->l,level+1);
 
 }
-void display(btree *root){
-    draw(root,0);
+void draw(btree *root){
+    draw_(root,0);
+    printf("\n\n");
+    getchar();
 }
+static btree *find_min(btree *root){
+    if(root->l == NULL)
+        return root;
+
+    return find_min(root->l);
+}
+static btree *find_max(btree *root){
+    if(root->r == NULL) 
+        return root;
+    return find_max(root->r);
+}
+static int get_num(btree *root){
+    if(root == NULL)
+      return 0;
+
+    return get_num(root->l) + 1 +get_num(root->r);
+}
+static void turn_left(btree **root){
+    //保存root节点    
+    btree *cur = *root;
+        
+    *root = cur->r;
+    cur->r = NULL;
+
+    find_min(*root)->l = cur;
+    draw(tree);
+}
+static void turn_right(btree **root){
+    btree *cur = *root;
+
+    *root = cur->l;
+    cur->l = NULL;
 
 
+    find_max(*root)->r = cur;
+
+    draw(tree);
+}
+void balance(btree **root){
+    if(*root == NULL)
+        return;
+
+    while(1){
+    int sub = get_num((*root)->l)-get_num((*root)->r);
+    if(sub >=-1 && sub <=1)
+        break;
+    if(sub < -1)
+        turn_left(root);
+    if(sub > 1)
+        turn_right(root);
+    }
+    balance(&(*root)->l);
+    balance(&(*root)->r);
+}
 //比当前节点小的左走，大的右走
 int main(void){
     int     arr[] = {1,2,3,7,6,5,9,8,4};
-    btree   *tree = NULL;
+   // btree   *tree = NULL;
     score   tmp,*data;
     int     i,ret;
     for(i = 0;i<sizeof(arr)/sizeof(*arr);i++)
@@ -94,7 +150,11 @@ int main(void){
           printf("插入失败\n");
 
     }
-    display(tree);
+    draw(tree);
+    printf("\n\n");
+    balance(&tree);
+    //draw(tree);
+
     int tmpid = 12;
     data = find(tree,tmpid);
     if(data == NULL)
