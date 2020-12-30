@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "llist.h"
+#include <llist.h>
 
 #define NAMESIZE    32
 typedef struct  score_st{
@@ -34,7 +34,7 @@ int main(){
     int     i,ret;
     score data;
     
-    llist_create(&handler,sizeof(score));
+    handler = llist_create(sizeof(score));
 
     for(i=0;i<7;i++){
         data.id = i;
@@ -59,7 +59,7 @@ int main(){
     score *sdata = NULL;
     char name[5] = "stu1";
     ret = llist_fetch(handler,name,&name_cmp,sdata);
-    if(ret !=LLIST_ERROR_OK){
+    if(ret !=LLIST_ERROR_FLASE){
         printf("fetch为空");
     }else{
         print_s(sdata);

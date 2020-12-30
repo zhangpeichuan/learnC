@@ -22,9 +22,7 @@ typedef struct llist_st {
     struct  llist_node_st head;
 }LLIST;
 
-LLIST *llist_createbysize(int init_size);
-
-LL_ERROR llist_create(LLIST **L,int init_size);
+LLIST *llist_create(int init_size);
 
 LL_ERROR llist_insert(LLIST *L,const void *data,LL_MODE mode);
 

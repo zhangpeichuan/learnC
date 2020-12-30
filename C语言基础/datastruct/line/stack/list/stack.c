@@ -4,7 +4,7 @@
 #include "stack.h"
 
 STACK *stack_create(int initsize){
-    return llist_createbysize(initsize);
+    return llist_create(initsize);
 }
 int stack_push(STACK *ptr,const void *data){
     return llist_insert(ptr,data,LLIST_MODE_FORWARD);

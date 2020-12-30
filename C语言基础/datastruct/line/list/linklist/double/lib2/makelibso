@@ -1,0 +1,32 @@
+静态库
+
+libxx.a
+xx代指库名
+gcc -c ...c 生成.o文件
+ar -cr libxx.a yyy.o
+
+发布到
+.h /usr/local/include
+.a /usr/local/lib
+
+gcc -L /usr/local/lib -o main main.o -lxx
+-l参数必须在最后，有依赖
+
+动态库
+libxx.so
+
+gcc -shared -fPIC -o libxx.so yyy.c
+gcc -shared -fpic -o libxx.so yyy.c
+发布到
+/usr/local/include
+/usr/local/lib
+
+在/etc/ld.so.conf中添加
+/sbin/ldconfig 重读 /etc/ld.so.conf
+
+gcc -I /usr/local/include -L/usr/local/lib -o .... -lxx
+ldd - print shared library dependencies
+otool -L mac用户查看方式 
+非root用户发布
+cp xx.so ~/lib
+export LD_LIBRARY_PATH=~/lib
