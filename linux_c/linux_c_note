@@ -32,8 +32,6 @@ fflush();
 	tmpfile
 
 
-
-
 位图
 r->     O_RDONLY
 r+->    O_RDWR
@@ -49,19 +47,83 @@ fd文件描述符是在文件IO中贯穿始终的类型
 文件IO操作:open、close、read、write、lseek
     open 变参函数
     
-将文件IO与标准IO的区别
+文件IO与标准IO的区别
+举例:传达室老大爷跑邮局
+区别:响应速度&吞吐量
+面试：如何使一个程序变快
+提醒：标准IO和文件IO不可以混用
+文件IO与标准IO转换函数 fileno fdopen
+
 IO的效率问题
-文件共享
-原子操作
-程序中的重定向：dup,dup2
-同步：刷新数据sync fsync fdatasync 中间层    系统级别的开发
-fcntl();
-ioctl();
-/dev/fd/
+习题：将mycpy.c程序进行更改，将BUFSIZE逐步放大，观察运行时间变化，注意性能最佳拐点时bufsize的值,以及何时程序出问题
+time ./mycpy /etc/services /tmp/output
+
+文件共享 ：多个任务共同操作一个文件或者协同完成任务
+面试：删除一个文件的第10行
+while(){
+    lseek 11 +read +lseek10 +write
+}
+
+1->open r ->fd1 ->lseek 11
+2->open r+  fd2 ->leek 10
+while(){
+1->fd1->read
+2->fd2->write
+}
+
+process1->open->read
+process2->open->r+
+
+p1 ->read
+p2 ->write
+补充函数truncate/ftruncate
+
+原子操作：不可分割的操作
+原子：不可分割的最小单位
+原子操作的作用：解决竞争和操作
+tmpnam
+tmpfile
+
+程序中的重定向：
+dup,
+dup2 原子操作
+
+
+同步：刷新数据sync fsync fdatasync 中间层    系统级别的开发与设备相关操作
+
+fcntl();文件描述符所变得魔术几乎都来源于该函数
+
+ioctl();设备相关的内容 man 2 ioctl_list 设备相关
+
+/dev/fd/目录 虚目录，显示当前进行的文件描述符信息
 
 
 
+/*********************************************/
+文件系统
+类似ls的实现，如myls、mycpy
+
+一、目录和文件
+
+1、获取文件属性
+    stat,fstat,lstat
+2、文件的访问权限
+3、umask
+4、文件权限的更改/管理chmod、fchmod
+5、粘住位
+6、文件系统 FAT、UFS
+7、硬链接、符号链接
+8、utime时间
+9、目录的创建和销毁
+10、切换目录，更改当前工作路径
+11、分析目录/读取目录内容
+
+二、系统数据文件和信息
+
+三、进程环境
 
 
+
+/********************************************/
 
 
