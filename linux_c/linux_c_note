@@ -106,20 +106,78 @@ ioctl();设备相关的内容 man 2 ioctl_list 设备相关
 一、目录和文件
 
 1、获取文件属性
-    stat,fstat,lstat
+    stat:通过文件路径获取属性，面对符号链接文件时获取的是所指向的目标文件的属性
+    fstat:通过文件描述符获取属性
+    lstat:面对符号链接文件时获取到的是符号链接的属性
+    
+    st_mod 16位图
+    文件类型 dcb-lsp
+    d目录 
+    c字符设备文件 
+    b block 
+    - 常规文件
+    l 链接文件
+    s socket
+
 2、文件的访问权限
+    st_mod 是一个16位的位图，用于表示文件类型，文件访问权限以及特殊权限
 3、umask
+    作用：防止产生权限过松的文件
+    umask()
 4、文件权限的更改/管理chmod、fchmod
+    chmod(path,mode)
+    fchmod(fd,mode)
 5、粘住位
+    t位 目录设置t位
+    最初设计：二进制可执行文件保留执行痕迹，下次使用能更快点
+    pagecache
 6、文件系统 FAT、UFS
+    文件系统:文件或数据的存储和管理
+    FAT16/32 静态单链表 arr
+    UFS  磁盘-柱面组|块组-
+        description inode位图 块位图 inode 块 
+        inode stat 亚数据信息 无关 数据块指针组【15个指针】12个直接数据块指针 三级间接化指针
+        缺陷：不善于管理小文件，大量小文件，耗时查找
+    位图用途:找出两个32位无符号数中的大数，
+    文件名在目录文件中 inode+fname
+    目录项
 7、硬链接、符号链接
-8、utime时间
+    硬链接与目录项是同义词，且建立硬链接有限制，不能给分区建立
+    符号链接：可跨分区，可以给目录建
+    ln a a_link 目录下的同义词,
+    ln -s a a_s 符号链接
+    link 
+    ulink
+    remove
+    rename
+
+8、utime时间,可以更改文件的最后读的时间和最后修改时间
+    utime
+    ctime 
 9、目录的创建和销毁
+    mkdir
+    rmdir
 10、切换目录，更改当前工作路径
+    chdir
+    fchdir
+    getcwd
+    突破安全机制 chroot
 11、分析目录/读取目录内容
+    gloab() gl_pathv
 
+    opendir()
+    closedir()
+    readdir()
+
+    rewinddir()
+    seekdir()
+    telldir()
 二、系统数据文件和信息
-
+1 /etc/passwd  
+    getpwnam getpwuid
+2 /etc/group
+3 /etc/shadow
+4 时间戳
 三、进程环境
 
 
