@@ -8,3 +8,19 @@ ls -26a -26A --长格式
 创建-a文件
 touch ./-a
       -- -a
+
+
+
+time_t stamp
+time(&stamp)
+stamp = time(NULL)
+tm = localtime(&stmap)
+strftime(buf,BUFSIZE,"%Y-%m-%d",tm)
+puts(buf)
+time example	
+1	2014-5-16 10:34:20
+2	2014-5-16 10:34:21
+3	2014-5-16 10:44:22
+....
+
+
