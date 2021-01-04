@@ -174,11 +174,53 @@ ioctl();设备相关的内容 man 2 ioctl_list 设备相关
     telldir()
 二、系统数据文件和信息
 1 /etc/passwd  
-    getpwnam getpwuid
+    getpwnam()
+    getpwuid()
 2 /etc/group
+    getgruid()
+    getgrnam()
 3 /etc/shadow
-4 时间戳
+    hash    混淆    不可逆，如原串相同，所得串也相同，防备管理员监守自盗
+    加密  - 解密
+    x%5 =2
+    加密    安全
+    安全？  穷举：口令随机校验
+    getspiam()
+    crypt();
+    getpass();
+4 时间戳    time_t char* struct tm
+    time();
+    gmtime();
+    localtime();
+    mktime();
+    ctime();
+    strftime()
 三、进程环境
+1、main函数
+    int main(int argc,char *argv[])
+        env
+2、进程的终止【记熟】
+    正常终止
+        从main函数返回
+        调用exit
+        调用_exit或_Exit
+        最后一个线程从其启动例程返回
+        最后一个线程调用pthread_exit
+    异常终止
+        调用abort
+        接到一个信号并终止
+        最后一个线程对其取消请求作出相应
+    atexit():钩子函数 |类似析构函数
+3、命令行参数的分析
+    getopt()
+        H:带参数的选项
+        -识别非选项的传参
+    getopt_long()
+4、环境变量
+5、C程序的存储空间布局
+6、库
+7、函数跳转
+8、资源的获取及控制
 
 
 
