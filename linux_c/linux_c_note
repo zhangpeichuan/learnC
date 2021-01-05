@@ -292,15 +292,35 @@ ioctl();设备相关的内容 man 2 ioctl_list 设备相关
     setregid();
 
 6、观摩课:解释器文件
+    脚本文件 shell根据标本文件的标记，把当前指定的解释器装载进来，执行命令
+    #!/bin/bash
+    ls
+    whoami
 
 7、system();
-
+    理解:fork+exec+wait封装
 8、进程会计
-
+    acct();
 9、进程时间
-
+    times();
 10、守护进程
-
+    会话session，表示sid
+    终端---虚拟终端
+    setsid();
+    getpgrp();
+    getpgid();
+    setpgid();
+    前台进程组  
+    后台进程组
+    单实例守护进程，锁文件/var/run/name.pid
+    启动脚本文件:/etc/rc*...
 11、系统日志
+    syslogd服务
+    openlog();
+    syslog();
+    closelog();
 
 
+
+
+*******************************************************
