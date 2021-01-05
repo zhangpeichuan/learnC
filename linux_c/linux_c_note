@@ -101,6 +101,7 @@ ioctl();设备相关的内容 man 2 ioctl_list 设备相关
 
 /*********************************************/
 文件系统
+知识性的内容
 类似ls的实现，如myls、mycpy
 
 一、目录和文件
@@ -217,13 +218,89 @@ ioctl();设备相关的内容 man 2 ioctl_list 设备相关
         -识别非选项的传参
     getopt_long()
 4、环境变量
+    environ char **
+    getenv();
+    setenv();
+    putenv();
 5、C程序的存储空间布局
+    pmap(1)
 6、库
+    动态库
+    静态库
+    手工装载库 手工装载math库，并打印cos2.0
+    dlopen();
+    dlclose();
+    dlerror();
+    dlsym();
+    *(void **)(&consine) = dlsym(handle,"cos");
+
 7、函数跳转
+    setjmp();
+    longjmp();
+
 8、资源的获取及控制
+    getrlimit()
+    setrlimit()
 
 
 
-/********************************************/
+/*********************************************
+                        进程的基本知识
+已经进入多进程阶段，不涉及并发
+1、进程标识符pid
+    类型pid_t,有符号16位整型数
+    命令ps -axf -axm ax -L
+    进程号是顺次向下使用 文件描述符
+    getpid()
+    getppid()
+2、进程的产生
+    fork();理解关键字duplicationg意味着拷贝克隆，一模一样
+    fork后父子进程的区别:
+        fork的返回值不一样，pid不一样，ppid不同，为决信号和文件锁不继承，资源利用量清零
+    init进程,1号，是所有进程的祖先进程
+    调度器的调度策略来决定哪个进程先运行
+    fflush(NULL)的重要性
+    vfork();
+
+3、进程的销亡以及释放资源
+    wait();
+    waitpid();pid四种情况 <-1 -1 0 >1 
+    wait3();
+    wait4();
+    1、分块法
+    2、交叉分配法
+    3、池
+4、exec函数族的使用   fork wait exec结合
+    execl();
+    execlp();
+    execlpe();
+    execv();
+    execvp();
+    fflush的重要性
+5、用户权限以及组权限
+    uid r e s 
+    gid r e s 
+    u+s
+    g+s
+    getuid(); real userid
+    geteuid(); effective userid
+    getgid(); 真实
+    getegid();
+    setuid();
+    setgid();
+    setreuid();
+    setregid();
+
+6、观摩课:解释器文件
+
+7、system();
+
+8、进程会计
+
+9、进程时间
+
+10、守护进程
+
+11、系统日志
 
 
