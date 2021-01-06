@@ -277,19 +277,20 @@ ioctl();设备相关的内容 man 2 ioctl_list 设备相关
     execv();
     execvp();
     fflush的重要性
-5、用户权限以及组权限
+5、用户权限以及组权限(u+s,g+s)
     uid r e s 
     gid r e s 
-    u+s
-    g+s
+ 
     getuid(); real userid
     geteuid(); effective userid
     getgid(); 真实
     getegid();
     setuid();
     setgid();
-    setreuid();
+    setreuid(); 原子化操作
     setregid();
+    seteuid();
+    setegid();
 
 6、观摩课:解释器文件
     脚本文件 shell根据标本文件的标记，把当前指定的解释器装载进来，执行命令
@@ -324,3 +325,71 @@ ioctl();设备相关的内容 man 2 ioctl_list 设备相关
 
 
 *******************************************************
+                            并发(信号、线程)
+同步
+异步
+    异步事件的处理:查询法、通知法
+    异步事件发生频率稀疏：通知法
+              频率高：  查询法
+    两种方法的一种形式,
+一、信号 初步异步
+1、信号的概念
+    信号是软件层面的中断。
+    信号的响应依赖中断。
+2、signal();防止名空间冲突
+    void (*sigal(int signum,void (*fun)(int)))(int);
+    typedef void(*sighandler_t)(int);
+    sighandler_t sigal(int signum,sighandler_t handle);
+    信号会打断阻塞的系统调用 
+
+3、信号的不可靠
+    信号的行为不可靠，内核布置的执行现场，
+    链式结构
+4、可重入函数 解决信号不可靠
+    所有的系统调用都是可重入的，一部分库函数也是可重入的，说memcpy
+    rand_r()
+    gmtime_r()
+    
+5、信号的响应过程 重点信号是从kernel回到user的路上响应的
+    信号从收到到响应有一个不可避免的延迟
+    思考：如何忽略掉一个信号的
+        标准信号为什么要丢失
+    标准信号的响应没有严格的顺序
+    Mask    pending 位图
+    1           0
+
+
+6、信号常用函数
+    kill();
+        <0
+        0   组内广播
+        -1  全局广播
+        <-1 -pgid组内广播
+    raise();
+        kill(getpid(),sig);
+        pthread_kill(pthread_self(),sig);
+    alarm();
+        流控算法 流控，音频播放，视频播放，传输
+        mycpy 改为mycat 
+        mycat 改slowcat
+        slowcat 漏桶
+        slowcat2 令牌桶
+    pause();
+
+    abort();
+    system();
+    sleep();
+        sleep->alarm+pause
+        sleep->nanosleep
+7、信号集
+8、信号屏蔽字/pending集的处理
+9、扩展
+    sigsuspend();
+    sigaction();
+    setitimer(); 
+10、实时信号
+    标准信号、1-31
+    实时信号、SIGRT-MIN SIGRT-MAX
+二、线程    强烈异步
+
+

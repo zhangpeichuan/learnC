@@ -8,7 +8,17 @@ ls -26a -26A --长格式
 创建-a文件
 touch ./-a
       -- -a
+int f;
+f= func();
+.....???
+switch(f){
+      case 0:
+      case 1:
+      case 2:
+      default:
+            _exit(1);//abort(),raise(SIGXXXS);
 
+}
 
 
 time_t stamp
