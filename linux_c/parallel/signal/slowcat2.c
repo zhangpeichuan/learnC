@@ -13,7 +13,8 @@
 #define	BUFSIZE	CPS
 
 #define BURST   100
-static volatile int token = 0;
+//信号原子类型
+static volatile sig_atomic_t token = 0;
 static void alrm_handler(int s){
     alarm(1);
     if(token < BURST)
@@ -49,7 +50,7 @@ int main(int argc,char **argv){
     while(len){
         while (token <=0)
             pause();//去掉忙等
-        token--;
+        token--;//修改int为sig_atomic_t
         //令牌桶设计 buffer cache
         while ((len = read(sfd,&buf,BUFSIZE)) < 0)
         {
