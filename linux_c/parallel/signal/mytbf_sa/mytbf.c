@@ -31,21 +31,20 @@ static int min(int a,int b){
 }
 static void alarm_action(int sig,siginfo_t *infop,void *unused){
     int i;
-    if(infop->si_code == SI_KENEL)
+    if(infop->si_code != SI_KERNEL)
         return;
     
     for (i = 0; i < MYTBF_MAX; i++)
     {
         if(job[i] !=NULL){
             job[i]->token +=job[i]->cps;
-            if(job[i]->token > job[i]->burst)
+            if (job[i]->token > job[i]->burst)
                 job[i]->token = job[i]->burst;
         }
     }    
 }
 static void module_unload(void){
     int i;
-
     struct itimerval itv;
     sigaction(SIGALRM,&alarm_sa_save,NULL);
     itv.it_interval.tv_sec=0;
@@ -63,18 +62,18 @@ static void module_load(void){
 
     struct sigaction sa;
     struct itimerval itv;
-    sa.__sigaction_u.__sa_sigaction = alarm_action;
+    sa.sa_sigaction = alarm_action;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_SIGINFO;
     sigaction(SIGALRM,&sa,&alarm_sa_save);
-
+	//if error
 
     itv.it_interval.tv_sec=1;
     itv.it_interval.tv_usec=0;
     itv.it_value.tv_sec=1;
     itv.it_value.tv_usec=0;
     setitimer(ITIMER_REAL,&itv,NULL);
-
+	//if error
     atexit(module_unload);//钩子函数
 }
 

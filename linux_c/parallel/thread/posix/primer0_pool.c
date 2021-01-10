@@ -13,6 +13,7 @@
 static int num = 0;
 //忙等num值得变化，这个是通过查询法进行分配任务，优化点改为通知法
 static pthread_mutex_t mut_num = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t cond_num = PTHREAD_COND_INITIALIZER;
 
 static void *thr_prime(void *p);
 int main()
@@ -35,28 +36,27 @@ int main()
         pthread_mutex_lock(&mut_num);
         while (num != 0)
         {
-            pthread_mutex_unlock(&mut_num);
-            sched_yield(); //出让调度器
-            pthread_mutex_lock(&mut_num);
+			pthread_cond_wait(&cond_num,&mut_num);
         }
         num = i;
+		pthread_cond_signal(&cond_num);
         pthread_mutex_unlock(&mut_num);
     }
     pthread_mutex_lock(&mut_num);
     while (num != 0)
     {
-        pthread_mutex_unlock(&mut_num);
-        sched_yield(); //出让调度器
-        pthread_mutex_lock(&mut_num);
+		pthread_cond_wait(&cond_num,&mut_num);
     }
     num = -1;
+	pthread_cond_broadcast(&cond_num);
     pthread_mutex_unlock(&mut_num);
 
     for (i = 0; i < THRNUM; i++)
         pthread_join(tid[i], NULL);
 
     pthread_mutex_destroy(&mut_num);
-    exit(0);
+    pthread_cond_destroy(&cond_num);
+	exit(0);
 }
 static void *thr_prime(void *p)
 {
@@ -66,9 +66,7 @@ static void *thr_prime(void *p)
         pthread_mutex_lock(&mut_num);
         while (num == 0)
         {
-            pthread_mutex_unlock(&mut_num);
-            sched_yield();
-            pthread_mutex_lock(&mut_num);
+			pthread_cond_wait(&cond_num,&mut_num);
         }
         if (num == -1)//解锁后再跳转
         {
@@ -77,6 +75,7 @@ static void *thr_prime(void *p)
         }
         i = num;
         num = 0;
+		pthread_cond_broadcast(&cond_num);
         pthread_mutex_unlock(&mut_num);
 
         mark = 1;
