@@ -466,9 +466,163 @@ ioctl();设备相关的内容 man 2 ioctl_list 设备相关
 			pthread_cond_wait();
 	信号量:
 			哲学家就餐问题	
+    读写锁: 读锁->共享锁 写锁->互斥锁
+        避免写锁饿死
 4、线程属性
-   线程同步的属性   
+   pthread_attr_init();
+   pthread_attr_destroy();
+   pthread_attr_setstacksize();
+   更多属性man pthread_attr_init see also
+
+    线程同步的属性   
+        互斥量属性
+            pthread_mutexattr_init();
+            pthread_mutexattr_destroy();
+            pthread_mutexattr_getpshared();
+            pthread_mutexattr_setpshared();
+            
+            clone();进程线程不分家 man clone see flag
+            pthread_mutexattr_gettype();
+            pthread_mutexattr_settype();
+        条件变量
+            pthread_condattr_init();
+            pthread_condattr_destroy();
+        读写锁
+            pthread_rwlockattr_getshared();
+
 5、重入
+    多线程中的IO  func_unlocked puts puts_unlock();
+            
    线程与信号
+        pthread_sigmask();
+        sigwait();
+        kill(); 
+        pthread_kill();
    线程与fork
+
+openmp线程标准
+
+数据结构阶段链表，重构成并发版本
+
+多线程并发的工作模式
+流水线模式
+工作组模式   
+cs模型
+
+
+
+*****************************************
+                高级IO
+非阻塞IO  --    阻塞IO
+补充:有限状态机编程
+1、非阻塞IO
+    数据中继 L --- R
+    1、readL ->wrtieR->readR->writeL
+    2、readL ->wrtieR
+       readR->writeL
+    简单流程:自然流程是结构化的
+    复杂流程:自然流程不是结构化的
+    mycpy
+    dia有限状态机
+2、IO多路转接|IO多路复用
+    监视文件描述符的行为 
+    select(); 古老 可移植，上手快 问题1、监视现场和监视结果是在同一处空间，如果是异常信息清空；
+                2、如果监视文件描述符比较多，处理太麻烦了
+                3、nfds，int类型有大小限制
+                以事件为单位监视文件描述符，事件驱动
+        FD_CLR();
+        FD_ISSET();
+        FD_SET();
+        FD_ZERO();
+    poll();     可移植、用户态
+        以文件描述符驱动事件，结构体数组包含文件描述符和监视的事件和发生的事件
+        监视的行为更细致
+    epoll();linux方言 内核态 精华epoll_event.data{epoll_data union}
+        epoll_create();
+        epoll_ctl();
+        epoll_wait();
+3、其他读写函数
+    read、write是读取连续的内存空间，readv、writev是读取不连续的内存空间
+    readn、writen是APUE上的函数，坚持读写n byte
+    readv();读文件描述符多个碎片空间读取buf空间到
+    writev()
+    
+4、存储映射IO
+    mmap(); 创建映射可以做出来共享内存，匿名映射
+    munmap();解除映射malloc和free
+
+5、文件锁
+    fcntl();
+    lockf();
+    flock();
+
+晒质数问题的思索，从单个变量思考到扩充到数组，条件变量互斥量
+查询法--通知法--池类
+int ->顺序存储的循环队列arr ->queue队列->pipe管道->内核提供的管道-命名管道|匿名管道
+线程间通讯，自己实现，借助外来机制是不必要的，浪费时间
+进程间通讯用内核提供的
+
+********************************************************
+                                进程间通讯
+单机通信->进程间通讯pipe后fork
+1、管道
+    内核提供，单工，【一端为读端，一端作为写端】，自同步机制
+    匿名管道    
+        pipe()父写子读
+    命名管道
+        mkfifo
+2、XSI ->SysV
+    IPC -> Inter-Process Communication
+    主动端:先发包的一方
+    被动端：先收包的一方(先运行)
+    key
+    ipcs ftok() XXXget xxxop xxxctl
+            xxx-> msg     sem   shm 
+            man msgget msgop
+    ipcrm 删除
+    Message Queues ulimit -a 查看 先调用sender后启动reiver，能够收到
+    myftp 
+        c端 状态机 start 发path 失败EX T
+                  收data output 失败 进入Ex
+                        EOT 进入T
+                        是否退出或者继续进行
+
+    Semaphore Arrays
+        semget()
+        semop()
+        semctl()
+    Shared Memory
+    
+3、网络套接字socket
+    讨论:跨主机传输要注意的问题
+    1、字节序问题 
+        大端:低地址处放高字节
+        小端:低地址处放低字节
+        主机字节序:host
+        网络字节序:network
+        _ to _ _ : htons,htonl,ntohs,ntohl        
+    2、对齐:
+        struct{
+            int i;
+            char   ch;
+            float f;
+        };
+        解决:不对齐
+    3、类型长度问题
+        int
+        char
+        解决:int32_t,uint32_t,int64_t,uint8_t
+
+    SOCKET是什么
+        是封装成的文件描述符来抽象 底层的协议与上层通讯方式之间的中间层
+    系统IO、标准IO进行操作Socket，
+
+    报式套接字:
+    
+    流式套接字:
+
+
+
+
+
 
