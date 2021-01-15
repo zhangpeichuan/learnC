@@ -1,0 +1,20 @@
+	MyFTP小例子	
+本机通讯跨进程通讯
+Message Queue
+
+C端
+接受cmd发送的path，send到S端
+接受DATA包，CAT至终端，或者保存到制定路径下
+状态机原型
+
+
+
+S端
+收到C端的path包，发送DATA完毕后，发EOT包
+1、鉴定权限，返回错误信息
+2、S作为守护进程
+3、日志保存 
+
+本机通讯跨进程通讯
+Message Queue
+
