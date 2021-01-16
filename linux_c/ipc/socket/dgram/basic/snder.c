@@ -30,7 +30,8 @@ int main(int argc,char *argv[]){
 	raddr.sin_port = htons(atoi(RCVPORT));
 	inet_pton(AF_INET,argv[1],&raddr.sin_addr);
 	raddr_len = sizeof(raddr);
-	
+	//将sbuf中未使用的空间置为尾0，抓包的时候可以看到栈空间的内容泄露
+	memset(&sbuf,'\0',sizeof(sbuf));	
 	sbuf.math = htonl(rand()%100);
 	sbuf.chinese = htonl(rand()%100);
 	strcpy(sbuf.name,"zhangsan");	
