@@ -20,7 +20,8 @@
 #define	MAXREUSE		1000
 
 #define	SIG_NOTIFY		SIGUSR2
-#define	BUFSIZE			1024
+#define	LINEBUFSIZE		80
+#define	IPSTRSIZE		40
 enum {
 	STATE_IDEL = 0,
 	STATE_BUSY	
@@ -40,10 +41,13 @@ static void usr2_handler(int s){
 	return ;
 }
 static void server_job(int pos){
-	int ppid,client_sd,err,len;
+	int client_sd,err,len;
 	struct sockaddr_in raddr;
-	char	buf[BUFSIZE];
 	socklen_t	raddr_len;
+	time_t	stamp;
+	pid_t ppid;
+	char	linebuf[LINEBUFSIZE];
+	char	ipstr[IPSTRSIZE];
 	ppid = getppid();
 	while(1)
 	{
@@ -61,19 +65,20 @@ static void server_job(int pos){
 		//接收到客户端的连接后，通知父进程，更改自身状态
 		serverpool[pos].state = STATE_BUSY;
 		kill(ppid,SIG_NOTIFY);
+		//printf("pid =[%d] state = %d \n",serverpool[pos].pid,serverpool[pos].state);
 		//打印客户端信息
-		inet_ntop(AF_INET,&raddr.sin_addr,buf,BUFSIZE);
+		inet_ntop(AF_INET,&raddr.sin_addr,ipstr,IPSTRSIZE);
 		//printf("[%d] Client%s:%d\n",getpid(),buf,ntohs(raddr.sin_port));
 
-		long long stamp = time(NULL);
-		len = snprintf(buf,BUFSIZE,FMT_STAMP,stamp);
-		err = send(client_sd,buf,len,0);
+		stamp = time(NULL);
+		len = snprintf(linebuf,LINEBUFSIZE,FMT_STAMP,stamp);
+		err = send(client_sd,linebuf,len,0);
 		if(err < 0){
-			fprintf(stdout,"client_sd[%d] send() failed %d\n",serverpool[pos].pid,err);	
+		//	fprintf(stdout,"client_sd[%d] send() failed %d\n",serverpool[pos].pid,err);	
 		}else {
-			printf("ServerClient_sd[%d] send() success\n",serverpool[pos].pid);
+		//	printf("ServerClient_sd[%d] send() success\n",serverpool[pos].pid);
 		}
-		sleep(2);
+		sleep(5);
 		close(client_sd);
 	}	
 
@@ -119,10 +124,12 @@ static int del_1_server(void){
 }
 //遍历池
 static int scan_pool(void){
-	int idle,busy,i;
+	int idle = 0, busy = 0 ;
+	int i;
 	for(i = 0;i<MAXCLIENTS;i++){
 		if(serverpool[i].pid == -1)
 			continue;
+		//检测进程是否存在
 		if(kill(serverpool[i].pid,0)){
 			serverpool[i].pid = -1;
 			continue;
@@ -133,6 +140,7 @@ static int scan_pool(void){
 			busy++;
 		}else{
 			//异常状态退出
+			fprintf(stderr,"Unknown state.\n");
 			abort();
 		}
 	}
@@ -168,6 +176,7 @@ int main(){
 		perror("mmap()");
 		exit(1);
 	}
+	//初始化
 	for(i = 0;i < MAXCLIENTS;i++){
 		serverpool[i].pid = -1;
 	}
@@ -206,14 +215,15 @@ int main(){
 		sigsuspend(&oset);
 		//查看进程池
 		scan_pool();
-		
 		//contrl the pool
 		if(idle_count > MAXSPARESERVER){
 			for(i = 0;i < (idle_count - MAXSPARESERVER);i++)
 				del_1_server();
 		}else if(idle_count < MINSPARESERVER){
-			for(i = 0;i< (idle_count - MINSPARESERVER);i++)
+			for(i = 0;i< ( MINSPARESERVER - idle_count);i++)
 				add_1_server();
+		}else {
+			printf("idle %d busy %d \n",idle_count,busy_count);
 		}
 		
 		//print pool

@@ -1,14 +1,5 @@
-C端(主动端)
-1、获取SOCKET
-2、给SOCKET取得地址(可省略)
-3、发送连接
-4、收发消息
-5、关闭
 
-S端（被动端）
-1、获取SOCKET
-2、给SOCKET取得地址
-3、将SOCKET置为监听模式
-4、接受连接
-5、收发消息
-6、关闭
+client.c
+通过多线程发起多个客户端连接，修改参数进行调整
+通过pool_static脚本命令进行测试验证
+while true;do (./client 127.0.0.1 &);sleep 1;done
