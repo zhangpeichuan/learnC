@@ -1,11 +1,11 @@
 #ifndef	PROTO_H__
 #define	PROTO_H__
-
+#define	MP3_BITRATE		128*1024	
 #include "site_type.h"
 #define	DEFAULT_MGROUP	"224.2.2.2"
 #define	DEFAULT_PORT	"1989"
 
-#define	CHNR			100
+#define	CHNNR			100
 
 #define	LISTCHNID		0
 
@@ -35,7 +35,8 @@ struct msg_channel_st{
 */
 struct msg_listentry_st{
 	chnid_t		chnid;
-	uint8_t		desc[1]
+	uint16_t	len;
+	char		desc[1];
 }__attribute__((packed));
 struct msg_list_st{
 	chnid_t		chnid;/* must be LISTCHNID */

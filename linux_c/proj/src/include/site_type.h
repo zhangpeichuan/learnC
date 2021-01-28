@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
-#define	uint8_t		chnid_t;
+//#define	uint8_t		chnid_t;
+#define	chnid_t		uint8_t 
 
 #endif
