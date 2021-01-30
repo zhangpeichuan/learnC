@@ -120,7 +120,7 @@ int main(int argc,char **argv){
 	int len;
 	while(1){
 		len = recvfrom(sd,msg_list,MSG_LIST_MAX,0,(void *)&serveraddr,&serveraddr_len);
-		if(len < MSG_LIST_MAX){
+		if(len < sizeof(struct msg_list_st)){
 			fprintf(stderr,"message is too small.\n");
 			continue;
 		}

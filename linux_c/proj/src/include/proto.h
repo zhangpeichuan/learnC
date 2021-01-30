@@ -36,7 +36,7 @@ struct msg_channel_st{
 struct msg_listentry_st{
 	chnid_t		chnid;
 	uint16_t	len;
-	char		desc[1];
+	uint8_t		desc[1];
 }__attribute__((packed));
 struct msg_list_st{
 	chnid_t		chnid;/* must be LISTCHNID */

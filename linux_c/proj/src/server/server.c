@@ -114,7 +114,7 @@ static int socket_init(void){
 	inet_pton(AF_INET,server_conf.mgroup,&sndaddr.sin_addr);
 	return 0;
 }
-int main(int argc,char *argv){
+int main(int argc,char **argv){
 	int c;
 	struct sigaction sa;
 	sa.sa_handler = daemon_exit;
