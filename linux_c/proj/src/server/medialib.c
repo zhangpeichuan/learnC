@@ -61,16 +61,16 @@ static struct channel_context_st *path2entry(const char *path){
 		return NULL;
 	}
 	me->desc = strdup(linebuf);
-	
+
 	strncpy(pathstr,path,PATHSIZE);
 	strncat(pathstr,"/*.mp3",PATHSIZE-1);
-	if(glob(path,0,NULL,&me->mp3glob) != 0){
+	if(glob(pathstr,0,NULL,&me->mp3glob) != 0){
 		curr_id++;
-		syslog(LOG_ERR,"%s is not a channel dir(can't find m3 files)",path);
+		syslog(LOG_ERR,"%s is not a channel dir(can't find mp3 files)",path);
 		free(me);
 		return NULL;
 	}
-
+	
 	me->pos = 0;
 	me->offset = 0;
 	me->fd = open(me->mp3glob.gl_pathv[me->pos],O_RDONLY);
@@ -96,7 +96,7 @@ int mlib_getchnlist(struct mlib_listentry_st **result,int *result_num){
 	snprintf(path,PATHSIZE,"%s/*",server_conf.media_dir);
 	//解析目录
 	if(glob(path,0,NULL,&globres)){
-		syslog(LOG_ERR,"glob() %d",strerror(errno));	
+		syslog(LOG_ERR,"glob() %s",strerror(errno));	
 		return -1;
 	}
 	ptr = malloc(sizeof(struct mlib_listentry_st)*globres.gl_pathc);
@@ -124,6 +124,7 @@ int mlib_getchnlist(struct mlib_listentry_st **result,int *result_num){
 }
 int mlib_freechnlist(struct mlib_listentry_st *ptr){
 	free(ptr);
+	return 0;
 }
 static int open_next(chnid_t chnid){
 	int i = 0;
@@ -142,7 +143,8 @@ static int open_next(chnid_t chnid){
 			return 0;
 		}
 	}
-	syslog(LOG_ERR,"None of mp3s in channel %d is available",chnid);
+	syslog(LOG_ERR,"None of mp3 in channel %d is available",chnid);
+	return 0;
 }
 size_t mlib_readchn(chnid_t chnid,void *buf,size_t size){
 	int tbfsize;
