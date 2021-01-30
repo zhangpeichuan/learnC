@@ -114,7 +114,7 @@ static int socket_init(void){
 	inet_pton(AF_INET,server_conf.mgroup,&sndaddr.sin_addr);
 	return 0;
 }
-int main(int argc,char *argv){
+int main(int argc,char *argv[]){
 	int c;
 	struct sigaction sa;
 	sa.sa_handler = daemon_exit;
@@ -167,11 +167,10 @@ int main(int argc,char *argv){
 		}
 	}
 	/*守护进程的实现*/
-	if(server_conf.runmode == RUN_DAEMON)
-		if(daemonize() != 0){
+	if(server_conf.runmode == RUN_DAEMON){
+		if(daemonize() != 0)
 			exit(1);
-		}
-	else if(server_conf.runmode == RUN_FOREGROUND){
+	}else if(server_conf.runmode == RUN_FOREGROUND){
 		/*do nothing*/	
 	}else{
 //		fprintf(stderr,"EINVAL \n");
@@ -189,6 +188,7 @@ int main(int argc,char *argv){
 		syslog(LOG_ERR,"mlib_getchnlist():%s",strerror(err));
 		exit(1);
 	}
+
 	/*创建节目单线程*/
 	thr_list_create(list,list_size);
 	/*创建频道线程*/

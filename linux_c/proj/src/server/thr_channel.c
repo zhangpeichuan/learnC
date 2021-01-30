@@ -29,14 +29,16 @@ static void *thr_channel_snder(void *ptr){
 		exit(1);
 	}
 	sbufp->chnid = ent->chnid;
+		while(1)
+		pause();
 	while(1){
 		len = mlib_readchn(ent->chnid,sbufp->data,MSG_DATA);
+		syslog(LOG_ERR,"malloc():%s\n",strerror(errno));
 		if(sendto(server_sd,sbufp,len+sizeof(chnid_t),0,(void *)&sndaddr,sizeof(sndaddr))< 0){
 			syslog(LOG_ERR,"thr_channel(%d):sendto():%s failed",ent->chnid,strerror(errno));
 		}
 		sched_yield();
 	}
-	pthread_exit(NULL);
 }
 int thr_channel_create(struct mlib_listentry_st *ptr){
 	int err;
@@ -60,10 +62,9 @@ int thr_channel_destroy(struct mlib_listentry_st *ptr){
 		}
 		pthread_join(thr_channel[i].tid,NULL);
 		thr_channel[i].chnid = -1;
-		return 0;
 		}
-
 	}
+	return 0;
 }
 
 int thr_channel_destroyall(void){
